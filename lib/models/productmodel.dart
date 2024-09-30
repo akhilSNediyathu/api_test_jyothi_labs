@@ -1,38 +1,4 @@
-
-
 class ProductResponse {
-  final List<Product> products;
-  final int total;
-  final int skip;
-  final int limit;
-
-  ProductResponse({
-    required this.products,
-    required this.total,
-    required this.skip,
-    required this.limit,
-  });
-
-  factory ProductResponse.fromJson(Map<String, dynamic> json) {
-    return ProductResponse(
-      products: List<Product>.from(json['products'].map((x) => Product.fromJson(x))),
-      total: json['total'],
-      skip: json['skip'],
-      limit: json['limit'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'products': List<dynamic>.from(products.map((x) => x.toJson())),
-      'total': total,
-      'skip': skip,
-      'limit': limit,
-    };
-  }
-}
-
-class Product {
   final int id;
   final String title;
   final String description;
@@ -53,10 +19,10 @@ class Product {
   final String returnPolicy;
   final int minimumOrderQuantity;
   final Meta meta;
-  final String thumbnail;
   final List<String> images;
+  final String thumbnail;
 
-  Product({
+  ProductResponse({
     required this.id,
     required this.title,
     required this.description,
@@ -77,34 +43,36 @@ class Product {
     required this.returnPolicy,
     required this.minimumOrderQuantity,
     required this.meta,
-    required this.thumbnail,
     required this.images,
+    required this.thumbnail,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      category: json['category'],
-      price: json['price'].toDouble(),
-      discountPercentage: json['discountPercentage'].toDouble(),
-      rating: json['rating'].toDouble(),
-      stock: json['stock'],
-      tags: List<String>.from(json['tags']),
-      brand: json['brand'],
-      sku: json['sku'],
-      weight: json['weight'].toDouble(),
-      dimensions: Dimensions.fromJson(json['dimensions']),
-      warrantyInformation: json['warrantyInformation'],
-      shippingInformation: json['shippingInformation'],
-      availabilityStatus: json['availabilityStatus'],
-      reviews: List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
-      returnPolicy: json['returnPolicy'],
-      minimumOrderQuantity: json['minimumOrderQuantity'],
-      meta: Meta.fromJson(json['meta']),
-      thumbnail: json['thumbnail'],
-      images: List<String>.from(json['images']),
+  factory ProductResponse.fromJson(Map<String, dynamic> json) {
+    return ProductResponse(
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      category: json['category'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      discountPercentage: (json['discountPercentage'] ?? 0).toDouble(),
+      rating: (json['rating'] ?? 0).toDouble(),
+      stock: json['stock'] ?? 0,
+      tags: List<String>.from(json['tags'] ?? []),
+      brand: json['brand'] ?? '',
+      sku: json['sku'] ?? '',
+      weight: (json['weight'] ?? 0).toDouble(),
+      dimensions: Dimensions.fromJson(json['dimensions'] ?? {}),
+      warrantyInformation: json['warrantyInformation'] ?? '',
+      shippingInformation: json['shippingInformation'] ?? '',
+      availabilityStatus: json['availabilityStatus'] ?? '',
+      reviews: (json['reviews'] as List<dynamic>? ?? [])
+          .map((i) => Review.fromJson(i))
+          .toList(),
+      returnPolicy: json['returnPolicy'] ?? '',
+      minimumOrderQuantity: json['minimumOrderQuantity'] ?? 0,
+      meta: Meta.fromJson(json['meta'] ?? {}),
+      images: List<String>.from(json['images'] ?? []),
+      thumbnail: json['thumbnail'] ?? '',
     );
   }
 
@@ -118,7 +86,7 @@ class Product {
       'discountPercentage': discountPercentage,
       'rating': rating,
       'stock': stock,
-      'tags': List<dynamic>.from(tags.map((x) => x)),
+      'tags': tags,
       'brand': brand,
       'sku': sku,
       'weight': weight,
@@ -126,12 +94,12 @@ class Product {
       'warrantyInformation': warrantyInformation,
       'shippingInformation': shippingInformation,
       'availabilityStatus': availabilityStatus,
-      'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
+      'reviews': reviews.map((e) => e.toJson()).toList(),
       'returnPolicy': returnPolicy,
       'minimumOrderQuantity': minimumOrderQuantity,
       'meta': meta.toJson(),
+      'images': images,
       'thumbnail': thumbnail,
-      'images': List<dynamic>.from(images.map((x) => x)),
     };
   }
 }
@@ -141,17 +109,13 @@ class Dimensions {
   final double height;
   final double depth;
 
-  Dimensions({
-    required this.width,
-    required this.height,
-    required this.depth,
-  });
+  Dimensions({required this.width, required this.height, required this.depth});
 
   factory Dimensions.fromJson(Map<String, dynamic> json) {
     return Dimensions(
-      width: json['width'].toDouble(),
-      height: json['height'].toDouble(),
-      depth: json['depth'].toDouble(),
+      width: (json['width'] ?? 0).toDouble(),
+      height: (json['height'] ?? 0).toDouble(),
+      depth: (json['depth'] ?? 0).toDouble(),
     );
   }
 
@@ -167,7 +131,7 @@ class Dimensions {
 class Review {
   final int rating;
   final String comment;
-  final String date;
+  final DateTime date;
   final String reviewerName;
   final String reviewerEmail;
 
@@ -181,11 +145,11 @@ class Review {
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      rating: json['rating'],
-      comment: json['comment'],
-      date: json['date'],
-      reviewerName: json['reviewerName'],
-      reviewerEmail: json['reviewerEmail'],
+      rating: json['rating'] ?? 0,
+      comment: json['comment'] ?? '',
+      date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+      reviewerName: json['reviewerName'] ?? '',
+      reviewerEmail: json['reviewerEmail'] ?? '',
     );
   }
 
@@ -193,7 +157,7 @@ class Review {
     return {
       'rating': rating,
       'comment': comment,
-      'date': date,
+      'date': date.toIso8601String(),
       'reviewerName': reviewerName,
       'reviewerEmail': reviewerEmail,
     };
@@ -201,8 +165,8 @@ class Review {
 }
 
 class Meta {
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final String barcode;
   final String qrCode;
 
@@ -215,17 +179,19 @@ class Meta {
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      barcode: json['barcode'],
-      qrCode: json['qrCode'],
+      createdAt:
+          DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+      updatedAt:
+          DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
+      barcode: json['barcode'] ?? '',
+      qrCode: json['qrCode'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
       'barcode': barcode,
       'qrCode': qrCode,
     };

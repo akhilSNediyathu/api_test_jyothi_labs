@@ -47,17 +47,7 @@ BorderRadius kradius30 = BorderRadius.circular(30);
 BorderRadius kradius20 = BorderRadius.circular(20.0);
 BorderRadius kradius100 = BorderRadius.circular(100);
 
-// images
-const logo = 'assets/images/logoF 1.png';
-const buzzBuddyText = 'assets/images/BuzzBuddy.png';
-const appBarLogo = 'assets/images/appbar logo.png';
-const savePostIcon = 'assets/images/save icon.png';
-const commentIcon = 'assets/images/message-circle.png';
-const likeIcon = 'assets/images/likeicon.png';
-const welcomeText = 'assets/images/welcome!.png';
-const googleLogo = 'assets/images/google_logo.png';
-const imagePicker = 'assets/images/imagePicker.jpg';
-const darkSplashImg = 'assets/images/InShot_20240701_102310310.gif';
+
 //Text Styles
 
 const appBarTitleStyle = TextStyle(
@@ -91,26 +81,9 @@ const showDialogueButtonStyle2 = TextStyle(
   fontSize: 16,
 );
 
-//auth key sharedpreference
-const authKey = 'UserLoggedIn';
 
-//token key sharedpreference
-const tokenKey = 'userToken';
 
-//userid key sharedpreference
-const userIdKey = 'userId';
 
-//userRole key sharedpreference
-const userRolekey = 'userRole';
-
-//userEmail key sharedpreference
-const userEmailkey = 'userEmail';
-
-//userName key sharedpreference
-const userNamekey = 'userName';
-
-//userProfilepic key sharedpreference
-const userProfilePickey = 'userProfilePic';
 
 BoxShadow lightModeShadow = BoxShadow(
   color: Colors.grey.withOpacity(0.3),
